@@ -1,180 +1,373 @@
 
 
-```diff
-<<<<<<< SEARCH
-        .materia {
-            padding: 10px;
-            margin: 5px 0;
-            cursor: pointer;
-            border-radius: 3px;
-            transition: background-color 0.3s;
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malla Curricular - Comunicación Audiovisual</title>
+    <style>
+        :root {
+            --primary-dark: #0a192f;
+            --primary-medium: #172a45;
+            --primary-light: #303f60;
+            --accent-color: #64ffda;
+            --text-primary: #ccd6f6;
+            --text-secondary: #8892b0;
         }
-        .materia.aprobada {
-            background-color: #4CAF50;
-            color: white;
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--primary-dark);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
         }
-        .materia.bloqueada {
-            background-color: #f44336;
-            color: white;
-            cursor: not-allowed;
+        
+        h1 {
+            text-align: center;
+            color: var(--accent-color);
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-        .tooltip {
-            display: none;
-            position: absolute;
-            background-color: #333;
-            color: #fff;
-            padding: 5px;
-            border-radius: 5px;
-            font-size: 12px;
+        
+        .header-info {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--text-secondary);
         }
-        =======
+        
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .periodo {
+            background: linear-gradient(145deg, var(--primary-medium), var(--primary-light));
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            width: 280px;
+            transition: transform 0.3s;
+        }
+        
+        .periodo:hover {
+            transform: translateY(-5px);
+        }
+        
+        .periodo h2 {
+            color: var(--accent-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+            margin-top: 0;
+            font-size: 1.3rem;
+        }
+        
+        .materias-container {
+            min-height: 400px;
+        }
+        
         .materia {
             padding: 12px;
             margin: 8px 0;
+            border-radius: 6px;
             cursor: pointer;
-            border-radius: 5px;
             transition: all 0.3s;
-            background-color: #0a192f;
-            border-left: 3px solid #64ffda;
+            position: relative;
+            overflow: hidden;
+            border-left: 3px solid transparent;
         }
+        
+        .materia:hover {
+            background-color: rgba(100, 255, 218, 0.1);
+            border-left-color: var(--accent-color);
+        }
+        
         .materia.aprobada {
-            background-color: #1a936f;
-            color: white;
+            background-color: rgba(46, 125, 50, 0.3);
+            color: #a5d6a7;
         }
+        
         .materia.bloqueada {
-            background-color: #6e0d0d;
-            color: #ccd6f6;
+            background-color: rgba(239, 83, 80, 0.3);
+            color: #ef9a9a;
             cursor: not-allowed;
-            opacity: 0.8;
         }
+        
+        .codigo {
+            font-weight: bold;
+            color: var(--accent-color);
+            margin-right: 5px;
+        }
+        
+        .materia .nombre {
+            display: inline-block;
+            width: calc(100% - 30px);
+        }
+        
         .tooltip {
-            display: none;
+            visibility: hidden;
+            width: 220px;
+            background-color: var(--primary-dark);
+            color: var(--text-primary);
+            text-align: center;
+            border-radius: 6px;
+            padding: 10px;
             position: absolute;
-            background-color: #233554;
-            color: #64ffda;
-            padding: 8px;
-            border-radius: 5px;
-            font-size: 14px;
-            border: 1px solid #64ffda;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            border: 1px solid var(--accent-color);
+            font-size: 0.9rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
         }
-        >>>>>>> REPLACE
+        
+        .tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: var(--accent-color) transparent transparent transparent;
+        }
+        
+        .materia.bloqueada:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        .controls {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        button {
+            background-color: var(--primary-light);
+            color: var(--text-primary);
+            border: 1px solid var(--accent-color);
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+        
+        button:hover {
+            background-color: var(--accent-color);
+            color: var(--primary-dark);
+        }
+        
+        .progress-bar {
+            width: 100%;
+            background-color: var(--primary-light);
+            border-radius: 5px;
+            margin: 20px 0;
+            height: 20px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: var(--accent-color);
+            width: 0%;
+            transition: width 0.5s;
+        }
+        
+        .progress-text {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .periodo {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Malla Curricular</h1>
+    <div class="header-info">
+        <p>Carrera de Comunicación Audiovisual · Haz clic en las materias para marcarlas como aprobadas</p>
+    </div>
+    
+    <div class="progress-text">
+        Progreso: <span id="progress-percentage">0</span>%
+    </div>
+    <div class="progress-bar">
+        <div class="progress" id="progress"></div>
+    </div>
+    
+    <div class="controls">
+        <button id="reset-btn">Reiniciar Progreso</button>
+        <button id="toggle-view">Modo Compacto</button>
+    </div>
+    
+    <div class="container" id="malla-container">
+        <!-- Los periodos se generarán dinámicamente con JavaScript -->
+    </div>
 
-
-
-  <<<<<<< SEARCH
+    <script>
+        // Datos de la malla curricular
         const malla = {
-            "1er Periodo": [
-                { id: "MAT101", nombre: "Introducción al Álgebra", prerequisitos: [] },
-                { id: "EAD100", nombre: "Creatividad e Innovación", prerequisitos: [] },
-                { id: "COM104", nombre: "Introducción a la Comunicación", prerequisitos: [] },
-                { id: "ESP103", nombre: "Comunicación Oral y Escrita", prerequisitos: [] }
-            ],
-            "2do Periodo": [
-                { id: "MAT102", nombre: "Álgebra", prerequisitos: ["MAT101"] },
-                { id: "EAD101", nombre: "Identidad y Cultura", prerequisitos: ["EAD100"] },
-                { id: "EAD102", nombre: "Representación y Conceptualización Gráfica", prerequisitos: ["COM104"] },
-                { id: "ESP102", nombre: "Expresión Oral", prerequisitos: ["ESP103"] }
-            ],
-            // Agregar el resto de los periodos aquí...
-        };
-        =======
-        const malla = {
-            "1er Periodo": [
-                { id: "MAT101", nombre: "Introducción al Álgebra", prerequisitos: [] },
-                { id: "EAD100", nombre: "Creatividad e Innovación", prerequisitos: [] },
-                { id: "COM104", nombre: "Introducción a la Comunicación", prerequisitos: [] },
-                { id: "ESP103", nombre: "Comunicación Oral y Escrita", prerequisitos: [] }
-            ],
-            "2do Periodo": [
-                { id: "MAT102", nombre: "Álgebra", prerequisitos: ["MAT101"] },
-                { id: "EAD101", nombre: "Identidad y Cultura", prerequisitos: ["EAD100"] },
-                { id: "EAD102", nombre: "Representación y Conceptualización Gráfica", prerequisitos: ["COM104"] },
-                { id: "ESP102", nombre: "Expresión Oral", prerequisitos: ["ESP103"] }
-            ],
-            "3er Periodo": [
-                { id: "COM105", nombre: "Semiólogía y Análisis del Discurso", prerequisitos: ["EAD101"] },
-                { id: "EAD103", nombre: "Apreciación y Crítica del Arte", prerequisitos: ["EAD101"] },
-                { id: "EAD104", nombre: "Storytelling", prerequisitos: ["EAD102", "ESP102"] },
-                { id: "ING101", nombre: "Inglés I / Idioma extranjero I", prerequisitos: [] }
-            ],
-            "4to Periodo": [
-                { id: "COM108", nombre: "Introducción a Medios", prerequisitos: ["COM105"] },
-                { id: "ART105", nombre: "Dibujo", prerequisitos: ["EAD103"] },
-                { id: "COM109", nombre: "Redacción y Lectura", prerequisitos: ["EAD104"] },
-                { id: "ING102", nombre: "Inglés 2 / Idioma extranjero 2", prerequisitos: ["ING101"] }
-            ],
-            "5to Periodo": [
-                { id: "COM219", nombre: "Edición de Imagen", prerequisitos: ["COM108"] },
-                { id: "MAT107", nombre: "Estadística I", prerequisitos: ["MAT102"] },
-                { id: "COM220", nombre: "Copywriting", prerequisitos: ["COM109"] },
-                { id: "ING103", nombre: "Inglés III / Idioma extranjero III", prerequisitos: ["ING102"] }
-            ],
-            "6to Periodo": [
-                { id: "MER207", nombre: "Mercadotecnia 1", prerequisitos: ["MAT107"] },
-                { id: "ART106", nombre: "Fotografía", prerequisitos: ["ART105"] },
-                { id: "COM221", nombre: "Guion Audiovisual", prerequisitos: ["COM220"] },
-                { id: "ING104", nombre: "Inglés 4 / Idioma extranjero 4", prerequisitos: ["ING103"] }
-            ],
-            "7mo Periodo": [
-                { id: "COM214", nombre: "Técnicas de Producción Sonora", prerequisitos: ["COM221"] },
-                { id: "IDE101", nombre: "Idioma Electivo 1", prerequisitos: [] },
-                { id: "ART108", nombre: "Fotografía Comercial", prerequisitos: ["ART106"] },
-                { id: "TLL314", nombre: "Metodología de Investigación", prerequisitos: ["MER207"] }
-            ],
-            "8vo Periodo": [
-                { id: "COM222", nombre: "Análisis de Públicos", prerequisitos: ["TLL314"] },
-                { id: "COM216", nombre: "Comunicación Gráfica", prerequisitos: ["ART108"] },
-                { id: "COM318", nombre: "Producción Sonora", prerequisitos: ["COM214"] },
-                { id: "IDE102", nombre: "Idioma Electivo 2", prerequisitos: ["IDE101"] }
-            ],
-            "9no Periodo": [
-                { id: "COM218", nombre: "Identidad Visual Corporativa", prerequisitos: ["COM222", "COM216"] },
-                { id: "COM324", nombre: "Diseño de Contenido Editorial", prerequisitos: ["COM216"] },
-                { id: "COM429", nombre: "Animación", prerequisitos: ["COM216"] },
-                { id: "IDE103", nombre: "Idioma Electivo 3", prerequisitos: ["IDE102"] }
-            ],
-            "10mo Periodo": [
-                { id: "COM325", nombre: "Comunicación Corporativa", prerequisitos: ["COM218"] },
-                { id: "COM403", nombre: "Creatividad Publicitaria", prerequisitos: [] },
-                { id: "COM217", nombre: "Edición de Video", prerequisitos: ["COM429"] },
-                { id: "IDE104", nombre: "Idioma Electivo 4", prerequisitos: ["IDE103"] }
-            ],
-            "11vo Periodo": [
-                { id: "COM313", nombre: "Publicidad", prerequisitos: ["COM325", "COM403"] },
-                { id: "COM315", nombre: "Planificación y Estrategia de Medios", prerequisitos: ["COM403"] },
-                { id: "COM326", nombre: "Fundamentos de Producción de Medios", prerequisitos: ["COM217"] },
-                { id: "SOC101", nombre: "Sociología", prerequisitos: [] }
-            ],
-            "12vo Periodo": [
-                { id: "COM425", nombre: "Comunicación Integrada de Mercadotecnia", prerequisitos: ["COM425"] },
-                { id: "COM327", nombre: "Industria Mediática y Publicitaria", prerequisitos: ["COM315", "COM325"] },
-                { id: "COM328", nombre: "Producción Audiovisual", prerequisitos: ["COM326"] },
-                { id: "HIS101", nombre: "Historia de Honduras", prerequisitos: [] }
-            ],
-            "13vo Periodo": [
-                { id: "COM428", nombre: "Comunicación para el Desarrollo", prerequisitos: ["COM425"] },
-                { id: "ECOM1", nombre: "Electiva de Formación Específica", prerequisitos: ["COM327"] },
-                { id: "COM432", nombre: "Estrategias de Comunicación Digital", prerequisitos: ["COM425"] },
-                { id: "FIL101", nombre: "Filosofía", prerequisitos: [] }
-            ],
-            "14vo Periodo": [
-                { id: "EMP401", nombre: "Generación de Empresas I", prerequisitos: [] },
-                { id: "ECOM2", nombre: "Electiva de Formación Específica 2", prerequisitos: ["ECOM1"] },
-                { id: "COM433", nombre: "Marketing de Contenidos", prerequisitos: ["COM432"] },
-                { id: "BIO101", nombre: "Electiva de C.C.N.N", prerequisitos: [] }
-            ],
-            "15vo Periodo": [
-                { id: "EMP402", nombre: "Generación de Empresas II", prerequisitos: ["EMP401"] },
-                { id: "ECOM3", nombre: "Electiva de Formación Específica 3", prerequisitos: ["ECOM2"] },
-                { id: "COM434", nombre: "Media Planning y Analítica Digital", prerequisitos: ["COM433"] },
-                { id: "TLL310", nombre: "Ética y Ciudadanía", prerequisitos: [] }
-            ],
-            "16vo Periodo": [
-                { id: "ECOM4", nombre: "Electiva de Formación Específica 4", prerequisitos: ["ECOM3"] },
-                { id: "COM435", nombre: "Proyecto Integrador de Comunicación", prerequisitos: ["COM434"] }
-            ],
-            "17vo Periodo": [
-                { id: "COM593", nombre: "Práctica Profesional", prerequisitos: ["COM435"] }
-            ]
-        };
-        >>>>>>> REPLACE
+            totalMaterias: 0,
+            materias: [
+                { 
+                    periodo: "1er Periodo",
+                    asignaturas: [
+                        { codigo: "MAT101", nombre: "Introducción al Álgebra", requisitos: [] },
+                        { codigo: "EAD100", nombre: "Creatividad e Innovación", requisitos: [] },
+                        { codigo: "COM104", nombre: "Introducción a la Comunicación", requisitos: [] },
+                        { codigo: "ESP103", nombre: "Comunicación Oral y Escrita", requisitos: [] }
+                    ]
+                },
+                { 
+                    periodo: "2do Periodo",
+                    asignaturas: [
+                        { codigo: "MAT102", nombre: "Álgebra", requisitos: ["MAT101"] },
+                        { codigo: "EAD101", nombre: "Identidad y Cultura", requisitos: ["EAD100"] },
+                        { codigo: "EAD102", nombre: "Representación y Conceptualización Gráfica", requisitos: ["COM104"] },
+                        { codigo: "ESP102", nombre: "Expresión Oral", requisitos: ["ESP103"] }
+                    ]
+                },
+                { 
+                    periodo: "3er Periodo",
+                    asignaturas: [
+                        { codigo: "COM105", nombre: "Semiólogía y Análisis del Discurso", requisitos: ["EAD101"] },
+                        { codigo: "EAD103", nombre: "Apreciación y Crítica del Arte", requisitos: ["EAD101"] },
+                        { codigo: "EAD104", nombre: "Storytelling", requisitos: ["EAD102", "ESP102"] },
+                        { codigo: "ING101", nombre: "Inglés I / Idioma extranjero I", requisitos: [] }
+                    ]
+                },
+                { 
+                    periodo: "4to Periodo",
+                    asignaturas: [
+                        { codigo: "COM108", nombre: "Introducción a Medios", requisitos: ["COM105"] },
+                        { codigo: "ART105", nombre: "Dibujo", requisitos: ["EAD103"] },
+                        { codigo: "COM109", nombre: "Redacción y lectura", requisitos: ["EAD104"] },
+                        { codigo: "ING102", nombre: "Inglés 2 / Idioma extranjero 2", requisitos: ["ING101"] }
+                    ]
+                },
+                { 
+                    periodo: "5to Periodo",
+                    asignaturas: [
+                        { codigo: "COM219", nombre: "Edición de Imagen", requisitos: ["COM108"] },
+                        { codigo: "MAT107", nombre: "Estadística I", requisitos: ["MAT102"] },
+                        { codigo: "COM220", nombre: "COPYWRITING", requisitos: ["COM109"] },
+                        { codigo: "ING103", nombre: "Inglés III / Idioma extranjero III", requisitos: ["ING102"] }
+                    ]
+                },
+                { 
+                    periodo: "6to Periodo",
+                    asignaturas: [
+                        { codigo: "MER207", nombre: "Mercadotecnia 1", requisitos: ["MAT107"] },
+                        { codigo: "ART106", nombre: "Fotografía", requisitos: ["ART105"] },
+                        { codigo: "COM221", nombre: "Guion Audiovisual", requisitos: ["COM220"] },
+                        { codigo: "ING104", nombre: "Inglés 4 / Idioma extranjero 4", requisitos: ["ING103"] }
+                    ]
+                },
+                { 
+                    periodo: "7to Periodo",
+                    asignaturas: [
+                        { codigo: "COM214", nombre: "Técnicas de Producción Sonora", requisitos: ["COM221"] },
+                        { codigo: "IDI101", nombre: "Idioma Electivo 1", requisitos: [] },
+                        { codigo: "ART108", nombre: "Fotografía Comercial", requisitos: ["ART106"] },
+                        { codigo: "TLL314", nombre: "Metodología de Investigación", requisitos: ["MER207"] }
+                    ]
+                },
+                { 
+                    periodo: "8vo Periodo",
+                    asignaturas: [
+                        { codigo: "COM222", nombre: "Análisis de Públicos", requisitos: ["TLL314"] },
+                        { codigo: "COM216", nombre: "Comunicación Gráfica", requisitos: ["ART108"] },
+                        { codigo: "COM318", nombre: "Producción sonora", requisitos: ["COM214"] },
+                        { codigo: "IDI102", nombre: "Idioma Electivo 2", requisitos: ["IDI101"] }
+                    ]
+                },
+                { 
+                    periodo: "9no Periodo",
+                    asignaturas: [
+                        { codigo: "COM218", nombre: "Identidad Visual Corporativa", requisitos: ["COM222", "COM216"] },
+                        { codigo: "COM324", nombre: "Diseño de Contenido Editorial", requisitos: ["COM216"] },
+                        { codigo: "COM429", nombre: "Animación", requisitos: ["COM216"] },
+                        { codigo: "IDI103", nombre: "Idioma Electivo 3", requisitos: ["IDI102"] }
+                    ]
+                },
+                { 
+                    periodo: "10mo Periodo",
+                    asignaturas: [
+                        { codigo: "COM325", nombre: "Comunicación Corporativa", requisitos: ["COM218"] },
+                        { codigo: "COM403", nombre: "Creatividad Publicitaria", requisitos: [] },
+                        { codigo: "COM217", nombre: "Edición de Video", requisitos: ["COM429"] },
+                        { codigo: "IDI104", nombre: "Idioma Electivo 4", requisitos: ["IDI103"] }
+                    ]
+                },
+                { 
+                    periodo: "11vo Periodo",
+                    asignaturas: [
+                        { codigo: "COM313", nombre: "Publicidad", requisitos: ["COM325", "COM403"] },
+                        { codigo: "COM315", nombre: "Planificación y Estrategia de Medios", requisitos: ["COM403"] },
+                        { codigo: "COM326", nombre: "Fundamentos de Producción de Medios", requisitos: ["COM217"] },
+                        { codigo: "SOC101", nombre: "Sociología", requisitos: [] }
+                    ]
+                },
+                { 
+                    periodo: "12vo Periodo",
+                    asignaturas: [
+                        { codigo: "COM425", nombre: "Comunicación Integrada de Mercadotecnia", requisitos: ["COM425"] },
+                        { codigo: "COM327", nombre: "Industria Mediática y Publicitaria", requisitos: ["COM315", "COM325"] },
+                        { codigo: "COM328", nombre: "Producción Audiovisual", requisitos: ["COM326"] },
+                        { codigo: "HIS101", nombre: "Historia de Honduras", requisitos: [] }
+                    ]
+                },
+                { 
+                    periodo: "13vo Periodo",
+                    asignaturas: [
+                        { codigo: "COM428", nombre: "Comunicación para el Desarrollo", requisitos: ["COM425"] },
+                        { codigo: "ECOM1", nombre: "Electiva de Formación Específica", requisitos: ["COM327"] },
+                        { codigo: "COM432", nombre: "Estrategias de Comunicación Digital", requisitos: ["COM425"] },
+                        { codigo: "FIL101", nombre: "Filosofía", requisitos: [] }
+                    ]
+                },
+                { 
+                    periodo: "14vo Periodo",
+                    asignaturas: [
+                        { codigo: "EMP401", nombre: "Generación de Empresas I", requisitos: [] },
+                        { codigo: "ECOM2", nombre: "Electiva de Formacion Especifica 2", requisitos: ["ECOM1"] },
+                        { codigo: "COM433", nombre: "Marketing de Contenidos", requisitos: ["COM432"] },
+                        { codigo: "BIO101", nombre: "Electiva de C.C.N.N", requisitos: [] }
+                    ]
+                },
+                { 
+                    periodo: "15vo Periodo",
+                    asignaturas: [
+                        { codigo: "EMP402", nombre: "Generación de Empresas II", requisitos: ["EMP401"] },
+                        { codigo: "ECOM3", nombre: "Electiva de Formacion Especifica 3", requisitos: ["ECOM2"] },
+                        { codigo: "COM434", nombre: "Media Planning y Analítica Digital", requisitos: ["COM433"] },
+                        { codigo: "TLL310", nombre: "Ética y Ciudadanía", requisitos: [] }
+                    ]
+                },
+                { 
+                    periodo: "16vo Periodo",
+                    asignaturas: [
+                        { codigo: "EC
