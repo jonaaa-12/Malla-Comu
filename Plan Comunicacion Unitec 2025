@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Malla Curricular Interactiva - Comunicación Audiovisual</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0f4f8;
+      margin: 0;
+      padding: 2rem;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      color: #1f2937;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    .period {
+      background: #ffffff;
+      padding: 1rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .period h2 {
+      font-size: 1.1rem;
+      color: #2563eb;
+      margin-bottom: 0.5rem;
+    }
+    .course {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      position: relative;
+    }
+    .course input[type="checkbox"] {
+      margin-right: 0.5rem;
+      transform: scale(1.3);
+    }
+    .course.locked {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+    .course.locked::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: -1.5rem;
+      left: 0;
+      font-size: 0.8rem;
+      color: #ef4444;
+    }
+  </style>
+</head>
+<body>
+  <h1>Malla Curricular Interactiva - Comunicación Audiovisual</h1>
+  <div class="grid" id="malla"></div>
+
+  <script>
+    const materias = {
+      // Ejemplo básico. Agrega aquí los periodos y materias según tu estructura:
+      "1er Periodo": [
+        { id: "MAT101", nombre: "Introducción al Álgebra" },
+        { id: "EAD100", nombre: "Creatividad e Innovación" },
+        { id: "COM104", nombre: "Introducción a la Comunicación" },
+        { id: "ESP103", nombre: "Comunicación Oral y Escrita" }
+      ],
+      "2do Periodo": [
+        { id: "MAT102", nombre: "Álgebra", requisitos: ["MAT101"] },
+        { id: "EAD101", nombre: "Identidad y Cultura", requisitos: ["EAD100"] },
+        { id: "EAD102", nombre: "Representación y Conceptualización Gráfica", requisitos: ["COM104"] },
+        { id: "ESP102", nombre: "Expresión Oral", requisitos: ["ESP103"] },
+      ],
+      // Continúa agregando todos los periodos...
+    };
+
+    const estado = JSON.parse(localStorage.getItem("mallaEstado")) || {};
+
+    function guardarEstado() {
+      localStorage.setItem("mallaEstado", JSON.stringify(estado));
+    }
+
+    function crearMalla() {
+      const contenedor = document.getElementById("malla");
+      for (const periodo in materias) {
+        const divPeriodo = document.createElement("div");
+        divPeriodo.className = "period";
+
+        const titulo = document.createElement("h2");
+        titulo.textContent = periodo;
+        divPeriodo.appendChild(titulo);
+
+        for (const curso of materias[periodo]) {
+          const divCurso = document.createElement("label");
+          divCurso.className = "course";
+          divCurso.setAttribute("data-id", curso.id);
+
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.checked = estado[curso.id] || false;
+
+          // Verifica requisitos
+          let bloqueado = false;
+          let tooltip = "";
+          if (curso.requisitos) {
+            for (const req of curso.requisitos) {
+              if (!estado[req]) {
+                bloqueado = true;
+                tooltip += `Requiere: ${req}\n`;
+              }
+            }
+          }
+
+          if (bloqueado) {
+            divCurso.classList.add("locked");
+            divCurso.setAttribute("data-tooltip", tooltip.trim());
+            checkbox.disabled = true;
+          }
+
+          checkbox.addEventListener("change", () => {
+            estado[curso.id] = checkbox.checked;
+            guardarEstado();
+            location.reload();
+          });
+
+          divCurso.appendChild(checkbox);
+          divCurso.appendChild(document.createTextNode(curso.nombre));
+
+          divPeriodo.appendChild(divCurso);
+        }
+        contenedor.appendChild(divPeriodo);
+      }
+    }
+
+    crearMalla();
+  </script>
+</body>
+</html>
