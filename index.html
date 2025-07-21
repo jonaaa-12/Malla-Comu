@@ -1,143 +1,180 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Malla Curricular Interactiva - Comunicación Audiovisual</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f0f4f8;
-      margin: 0;
-      padding: 2rem;
-      color: #333;
-    }
-    h1 {
-      text-align: center;
-      color: #1f2937;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1rem;
-      margin-top: 2rem;
-    }
-    .period {
-      background: #ffffff;
-      padding: 1rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-    .period h2 {
-      font-size: 1.1rem;
-      color: #2563eb;
-      margin-bottom: 0.5rem;
-    }
-    .course {
-      display: flex;
-      align-items: center;
-      margin-bottom: 0.5rem;
-      position: relative;
-    }
-    .course input[type="checkbox"] {
-      margin-right: 0.5rem;
-      transform: scale(1.3);
-    }
-    .course.locked {
-      opacity: 0.6;
-      pointer-events: none;
-    }
-    .course.locked::after {
-      content: attr(data-tooltip);
-      position: absolute;
-      bottom: -1.5rem;
-      left: 0;
-      font-size: 0.8rem;
-      color: #ef4444;
-    }
-  </style>
-</head>
-<body>
-  <h1>Malla Curricular Interactiva - Comunicación Audiovisual</h1>
-  <div class="grid" id="malla"></div>
 
-  <script>
-    const materias = {
-      // Ejemplo básico. Agrega aquí los periodos y materias según tu estructura:
-      "1er Periodo": [
-        { id: "MAT101", nombre: "Introducción al Álgebra" },
-        { id: "EAD100", nombre: "Creatividad e Innovación" },
-        { id: "COM104", nombre: "Introducción a la Comunicación" },
-        { id: "ESP103", nombre: "Comunicación Oral y Escrita" }
-      ],
-      "2do Periodo": [
-        { id: "MAT102", nombre: "Álgebra", requisitos: ["MAT101"] },
-        { id: "EAD101", nombre: "Identidad y Cultura", requisitos: ["EAD100"] },
-        { id: "EAD102", nombre: "Representación y Conceptualización Gráfica", requisitos: ["COM104"] },
-        { id: "ESP102", nombre: "Expresión Oral", requisitos: ["ESP103"] },
-      ],
-      // Continúa agregando todos los periodos...
-    };
 
-    const estado = JSON.parse(localStorage.getItem("mallaEstado")) || {};
-
-    function guardarEstado() {
-      localStorage.setItem("mallaEstado", JSON.stringify(estado));
-    }
-
-    function crearMalla() {
-      const contenedor = document.getElementById("malla");
-      for (const periodo in materias) {
-        const divPeriodo = document.createElement("div");
-        divPeriodo.className = "period";
-
-        const titulo = document.createElement("h2");
-        titulo.textContent = periodo;
-        divPeriodo.appendChild(titulo);
-
-        for (const curso of materias[periodo]) {
-          const divCurso = document.createElement("label");
-          divCurso.className = "course";
-          divCurso.setAttribute("data-id", curso.id);
-
-          const checkbox = document.createElement("input");
-          checkbox.type = "checkbox";
-          checkbox.checked = estado[curso.id] || false;
-
-          // Verifica requisitos
-          let bloqueado = false;
-          let tooltip = "";
-          if (curso.requisitos) {
-            for (const req of curso.requisitos) {
-              if (!estado[req]) {
-                bloqueado = true;
-                tooltip += `Requiere: ${req}\n`;
-              }
-            }
-          }
-
-          if (bloqueado) {
-            divCurso.classList.add("locked");
-            divCurso.setAttribute("data-tooltip", tooltip.trim());
-            checkbox.disabled = true;
-          }
-
-          checkbox.addEventListener("change", () => {
-            estado[curso.id] = checkbox.checked;
-            guardarEstado();
-            location.reload();
-          });
-
-          divCurso.appendChild(checkbox);
-          divCurso.appendChild(document.createTextNode(curso.nombre));
-
-          divPeriodo.appendChild(divCurso);
+```diff
+<<<<<<< SEARCH
+        .materia {
+            padding: 10px;
+            margin: 5px 0;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: background-color 0.3s;
         }
-        contenedor.appendChild(divPeriodo);
-      }
-    }
+        .materia.aprobada {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .materia.bloqueada {
+            background-color: #f44336;
+            color: white;
+            cursor: not-allowed;
+        }
+        .tooltip {
+            display: none;
+            position: absolute;
+            background-color: #333;
+            color: #fff;
+            padding: 5px;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+        =======
+        .materia {
+            padding: 12px;
+            margin: 8px 0;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+            background-color: #0a192f;
+            border-left: 3px solid #64ffda;
+        }
+        .materia.aprobada {
+            background-color: #1a936f;
+            color: white;
+        }
+        .materia.bloqueada {
+            background-color: #6e0d0d;
+            color: #ccd6f6;
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+        .tooltip {
+            display: none;
+            position: absolute;
+            background-color: #233554;
+            color: #64ffda;
+            padding: 8px;
+            border-radius: 5px;
+            font-size: 14px;
+            border: 1px solid #64ffda;
+        }
+        >>>>>>> REPLACE
 
-    crearMalla();
-  </script>
-</body>
-</html>
+
+
+  <<<<<<< SEARCH
+        const malla = {
+            "1er Periodo": [
+                { id: "MAT101", nombre: "Introducción al Álgebra", prerequisitos: [] },
+                { id: "EAD100", nombre: "Creatividad e Innovación", prerequisitos: [] },
+                { id: "COM104", nombre: "Introducción a la Comunicación", prerequisitos: [] },
+                { id: "ESP103", nombre: "Comunicación Oral y Escrita", prerequisitos: [] }
+            ],
+            "2do Periodo": [
+                { id: "MAT102", nombre: "Álgebra", prerequisitos: ["MAT101"] },
+                { id: "EAD101", nombre: "Identidad y Cultura", prerequisitos: ["EAD100"] },
+                { id: "EAD102", nombre: "Representación y Conceptualización Gráfica", prerequisitos: ["COM104"] },
+                { id: "ESP102", nombre: "Expresión Oral", prerequisitos: ["ESP103"] }
+            ],
+            // Agregar el resto de los periodos aquí...
+        };
+        =======
+        const malla = {
+            "1er Periodo": [
+                { id: "MAT101", nombre: "Introducción al Álgebra", prerequisitos: [] },
+                { id: "EAD100", nombre: "Creatividad e Innovación", prerequisitos: [] },
+                { id: "COM104", nombre: "Introducción a la Comunicación", prerequisitos: [] },
+                { id: "ESP103", nombre: "Comunicación Oral y Escrita", prerequisitos: [] }
+            ],
+            "2do Periodo": [
+                { id: "MAT102", nombre: "Álgebra", prerequisitos: ["MAT101"] },
+                { id: "EAD101", nombre: "Identidad y Cultura", prerequisitos: ["EAD100"] },
+                { id: "EAD102", nombre: "Representación y Conceptualización Gráfica", prerequisitos: ["COM104"] },
+                { id: "ESP102", nombre: "Expresión Oral", prerequisitos: ["ESP103"] }
+            ],
+            "3er Periodo": [
+                { id: "COM105", nombre: "Semiólogía y Análisis del Discurso", prerequisitos: ["EAD101"] },
+                { id: "EAD103", nombre: "Apreciación y Crítica del Arte", prerequisitos: ["EAD101"] },
+                { id: "EAD104", nombre: "Storytelling", prerequisitos: ["EAD102", "ESP102"] },
+                { id: "ING101", nombre: "Inglés I / Idioma extranjero I", prerequisitos: [] }
+            ],
+            "4to Periodo": [
+                { id: "COM108", nombre: "Introducción a Medios", prerequisitos: ["COM105"] },
+                { id: "ART105", nombre: "Dibujo", prerequisitos: ["EAD103"] },
+                { id: "COM109", nombre: "Redacción y Lectura", prerequisitos: ["EAD104"] },
+                { id: "ING102", nombre: "Inglés 2 / Idioma extranjero 2", prerequisitos: ["ING101"] }
+            ],
+            "5to Periodo": [
+                { id: "COM219", nombre: "Edición de Imagen", prerequisitos: ["COM108"] },
+                { id: "MAT107", nombre: "Estadística I", prerequisitos: ["MAT102"] },
+                { id: "COM220", nombre: "Copywriting", prerequisitos: ["COM109"] },
+                { id: "ING103", nombre: "Inglés III / Idioma extranjero III", prerequisitos: ["ING102"] }
+            ],
+            "6to Periodo": [
+                { id: "MER207", nombre: "Mercadotecnia 1", prerequisitos: ["MAT107"] },
+                { id: "ART106", nombre: "Fotografía", prerequisitos: ["ART105"] },
+                { id: "COM221", nombre: "Guion Audiovisual", prerequisitos: ["COM220"] },
+                { id: "ING104", nombre: "Inglés 4 / Idioma extranjero 4", prerequisitos: ["ING103"] }
+            ],
+            "7mo Periodo": [
+                { id: "COM214", nombre: "Técnicas de Producción Sonora", prerequisitos: ["COM221"] },
+                { id: "IDE101", nombre: "Idioma Electivo 1", prerequisitos: [] },
+                { id: "ART108", nombre: "Fotografía Comercial", prerequisitos: ["ART106"] },
+                { id: "TLL314", nombre: "Metodología de Investigación", prerequisitos: ["MER207"] }
+            ],
+            "8vo Periodo": [
+                { id: "COM222", nombre: "Análisis de Públicos", prerequisitos: ["TLL314"] },
+                { id: "COM216", nombre: "Comunicación Gráfica", prerequisitos: ["ART108"] },
+                { id: "COM318", nombre: "Producción Sonora", prerequisitos: ["COM214"] },
+                { id: "IDE102", nombre: "Idioma Electivo 2", prerequisitos: ["IDE101"] }
+            ],
+            "9no Periodo": [
+                { id: "COM218", nombre: "Identidad Visual Corporativa", prerequisitos: ["COM222", "COM216"] },
+                { id: "COM324", nombre: "Diseño de Contenido Editorial", prerequisitos: ["COM216"] },
+                { id: "COM429", nombre: "Animación", prerequisitos: ["COM216"] },
+                { id: "IDE103", nombre: "Idioma Electivo 3", prerequisitos: ["IDE102"] }
+            ],
+            "10mo Periodo": [
+                { id: "COM325", nombre: "Comunicación Corporativa", prerequisitos: ["COM218"] },
+                { id: "COM403", nombre: "Creatividad Publicitaria", prerequisitos: [] },
+                { id: "COM217", nombre: "Edición de Video", prerequisitos: ["COM429"] },
+                { id: "IDE104", nombre: "Idioma Electivo 4", prerequisitos: ["IDE103"] }
+            ],
+            "11vo Periodo": [
+                { id: "COM313", nombre: "Publicidad", prerequisitos: ["COM325", "COM403"] },
+                { id: "COM315", nombre: "Planificación y Estrategia de Medios", prerequisitos: ["COM403"] },
+                { id: "COM326", nombre: "Fundamentos de Producción de Medios", prerequisitos: ["COM217"] },
+                { id: "SOC101", nombre: "Sociología", prerequisitos: [] }
+            ],
+            "12vo Periodo": [
+                { id: "COM425", nombre: "Comunicación Integrada de Mercadotecnia", prerequisitos: ["COM425"] },
+                { id: "COM327", nombre: "Industria Mediática y Publicitaria", prerequisitos: ["COM315", "COM325"] },
+                { id: "COM328", nombre: "Producción Audiovisual", prerequisitos: ["COM326"] },
+                { id: "HIS101", nombre: "Historia de Honduras", prerequisitos: [] }
+            ],
+            "13vo Periodo": [
+                { id: "COM428", nombre: "Comunicación para el Desarrollo", prerequisitos: ["COM425"] },
+                { id: "ECOM1", nombre: "Electiva de Formación Específica", prerequisitos: ["COM327"] },
+                { id: "COM432", nombre: "Estrategias de Comunicación Digital", prerequisitos: ["COM425"] },
+                { id: "FIL101", nombre: "Filosofía", prerequisitos: [] }
+            ],
+            "14vo Periodo": [
+                { id: "EMP401", nombre: "Generación de Empresas I", prerequisitos: [] },
+                { id: "ECOM2", nombre: "Electiva de Formación Específica 2", prerequisitos: ["ECOM1"] },
+                { id: "COM433", nombre: "Marketing de Contenidos", prerequisitos: ["COM432"] },
+                { id: "BIO101", nombre: "Electiva de C.C.N.N", prerequisitos: [] }
+            ],
+            "15vo Periodo": [
+                { id: "EMP402", nombre: "Generación de Empresas II", prerequisitos: ["EMP401"] },
+                { id: "ECOM3", nombre: "Electiva de Formación Específica 3", prerequisitos: ["ECOM2"] },
+                { id: "COM434", nombre: "Media Planning y Analítica Digital", prerequisitos: ["COM433"] },
+                { id: "TLL310", nombre: "Ética y Ciudadanía", prerequisitos: [] }
+            ],
+            "16vo Periodo": [
+                { id: "ECOM4", nombre: "Electiva de Formación Específica 4", prerequisitos: ["ECOM3"] },
+                { id: "COM435", nombre: "Proyecto Integrador de Comunicación", prerequisitos: ["COM434"] }
+            ],
+            "17vo Periodo": [
+                { id: "COM593", nombre: "Práctica Profesional", prerequisitos: ["COM435"] }
+            ]
+        };
+        >>>>>>> REPLACE
